@@ -1,0 +1,144 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+</head>
+<body>
+
+<ul id="source">
+    <li>北京空气质量：<b>90</b></li>
+    <li>上海空气质量：<b>70</b></li>
+    <li>天津空气质量：<b>80</b></li>
+    <li>广州空气质量：<b>50</b></li>
+    <li>深圳空气质量：<b>40</b></li>
+    <li>福州空气质量：<b>32</b></li>
+    <li>成都空气质量：<b>90</b></li>
+</ul>
+
+<ul id="resort">
+    <!--
+    <li>第一名：北京空气质量：<b>90</b></li>
+    <li>第二名：北京空气质量：<b>90</b></li>
+    <li>第三名：北京空气质量：<b>90</b></li>
+     -->
+
+</ul>
+
+<button id="sort-btnH" onclick="btnHandle()">降排序</button>
+<button id="sort-btnL" onclick="btnHandleL()">升排序</button>
+<button id="close" onclick="closeResort()">收起序列</button>
+
+
+<script type="text/javascript">
+
+    /**
+     * getData方法
+     * 读取id为source的列表，获取其中城市名字及城市对应的空气质量
+     * 返回一个数组，格式见函数中示例
+     */
+    function getData() {
+        /*
+         coding here
+         */
+        function isBigEnough(string){
+            return string != "";
+        }
+        var data = document.getElementById("source");
+        var dataText = data.innerText.replace(/空气质量/g,"");
+        var dataText1 = dataText.replace(/：/g,",");
+        var dataString = dataText1.replace(/\s/g,"");
+        var dataString1 = [];
+        var filtered = dataText1.split(/\s/).filter(isBigEnough);
+        var result = [];
+        for(var i=0;i<filtered.length;i++){
+            result.push(filtered.slice(i,i+1));
+        }
+        console.log(result);
+        var result1 = [];
+
+        for(i=0;i<filtered.length;i++){
+            result1.push(result[i][0].split(/,/));
+
+        }
+        /*
+         data = [
+         ["北京", 90],
+         ["北京", 90]
+         ……
+         ]
+         */
+
+        return result1;
+
+    }
+    var result1Length = getData().length;
+    /**
+     * sortAqiData
+     * 按空气质量对data进行从小到大的排序
+     * 返回一个排序后的数组
+     */
+    function sortAqiData(data) {
+        function compareNumbers(a, b) {
+            return b[1] - a[1];
+        }
+        var rank1 = [];
+        rank1 = data.sort(compareNumbers);
+        return rank1;
+    }
+    function sortLAqiData(data) {
+        function compareNumbers(a, b) {
+            return a[1] - b[1];
+        }
+        var rank1 = [];
+        rank1 = data.sort(compareNumbers);
+        return rank1;
+    }
+
+    /**
+     * render
+     * 将排好序的城市及空气质量指数，输出显示到id位resort的列表中
+     * 格式见ul中的注释的部分
+     */
+    function render(data) {
+        for(var i=0;i<data.length;i++){
+            var r = document.createElement("li");
+            var rContent=document.createTextNode("第"+[i+1]+"名"+data[i]);
+            r.appendChild(rContent);
+            var r0 = document.getElementById("resort");
+            r0.appendChild(r);
+        }
+    }
+
+    function btnHandle() {
+        var aqiData = getData();
+        aqiData = sortAqiData(aqiData);
+        render(aqiData);
+    }
+    function btnHandleL() {
+        var aqiData = getData();
+        aqiData = sortLAqiData(aqiData);
+        render(aqiData);
+    }
+    function closeResort() {
+        var parent = document.getElementById("resort");
+        var child = parent.getElementsByTagName("li");
+        for(i=result1Length-1 ;i>-1;i--){
+            parent.removeChild(child[i]);
+          }
+    }
+
+
+
+    function init() {
+
+        // 在这下面给sort-btn绑定一个点击事件，点击时触发btnHandle函数
+
+    }
+
+
+    //init();
+
+</script>
+</body>
+</html>
